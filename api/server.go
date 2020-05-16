@@ -7,15 +7,25 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
+// database contains both a mongo Client
+// and a mongo Database handler to facilitate
+// connecting/disconnecting to a given db
+// and accessing colletions
+type dbConnection struct {
+	client   *mongo.Client
+	database *mongo.Database
+}
+
 // Server is a wrapper around echo.Echo and the database connection
 type Server struct {
-	db *mongo.Client
-	e  *echo.Echo
+	storage *dbConnection
+	e       *echo.Echo
 }
 
 // NewServer returns a new server instance
-func NewServer(db *mongo.Client, e *echo.Echo) *Server {
-	s := &Server{db: db, e: e}
+func NewServer(cli *mongo.Client, db *mongo.Database, e *echo.Echo) *Server {
+	conn := &dbConnection{client: cli, database: db}
+	s := &Server{storage: conn, e: e}
 	return s
 }
 
