@@ -1,0 +1,21 @@
+version: '2.0'
+
+services:
+  conexao_mongo:
+    build:
+      context: ./dep/mongo
+      dockerfile: mongo.dockerfile
+    container_name: mongodb_conn
+    expose:
+      - 27017
+    # ports:
+    #   - "27017:27017"
+    volumes:
+      - /data
+    networks:
+      - conexao_network
+    command: ["mongod", "--bind_ip_all", "--smallfiles", "--dbpath", "/data"]
+    restart: always
+
+networks:
+  conexao_network:
