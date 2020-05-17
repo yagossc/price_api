@@ -25,8 +25,6 @@ func FindProductByName(db *mongo.Database, name string) (app.Product, error) {
 		return app.Product{}, err
 	}
 
-	fmt.Printf("Found document: %v\n", product)
-
 	return product, nil
 }
 
@@ -34,6 +32,11 @@ func FindProductByName(db *mongo.Database, name string) (app.Product, error) {
 func InsertProduct(db *mongo.Database, p app.Product) error {
 
 	collection := db.Collection(productsColletion)
+
+	_, err := FindProductByName(db, p.Name)
+	if err == nil {
+		return fmt.Errorf("already existent")
+	}
 
 	insertResult, err := collection.InsertOne(context.TODO(), p)
 	fmt.Printf("Inserted result ID: %v\n", insertResult.InsertedID)

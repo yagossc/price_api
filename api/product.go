@@ -1,18 +1,19 @@
 package api
 
 import (
-	"fmt"
 	"net/http"
+	"strconv"
 
 	"github.com/labstack/echo/v4"
 	"github.com/yagossc/price_api/app"
+	"github.com/yagossc/price_api/internal"
 	"github.com/yagossc/price_api/store"
 )
 
 func (s *Server) quotation(c echo.Context) error {
 	var err error
-	var products []app.Product
-	var quoteRequest []app.Quotation
+	var totalPrice float64
+	var quoteRequest []app.QuotationRequest
 
 	if err = c.Bind(&quoteRequest); err != nil {
 		return err
@@ -23,12 +24,16 @@ func (s *Server) quotation(c echo.Context) error {
 		if err != nil {
 			return err
 		}
-		products = append(products, p)
+
+		f, err := strconv.ParseFloat(p.Price, 64)
+		if err != nil {
+			return err
+		}
+
+		totalPrice += f
 	}
 
-	fmt.Printf("%v\n", quoteRequest)
-	fmt.Printf("%v\n", products)
+	priceTable := internal.GetPriceTable(totalPrice)
 
-	return c.JSON(http.StatusOK, products)
-
+	return c.JSON(http.StatusOK, priceTable)
 }

@@ -78,20 +78,21 @@ func openDBConnection(cfg config) (*mongo.Client, *mongo.Database, error) {
 
 func seed(cfg config, db *mongo.Database) error {
 	initialSeed := []app.Product{
-		{Name: "MÓDULO POLI 330W", Price: "657,3798"},
-		{Name: "INVERSOR MONO 3KW 220V", Price: "3763,59375"},
-		{Name: "CABO SOLAR 6MM2 VM", Price: "5,32"},
-		{Name: "DISJUNTOR TRIPOLAR 63A", Price: "23,4348375"},
-		{Name: "PERFIS ALUMÍNIO 4150MM TELHADO 04 PLACAS", Price: "144,6571875"},
-		{Name: "ESTRUTURA SOLAR TELHA ONDULADA 4 PLACAS", Price: "165,615625"},
+		{Name: "MÓDULO POLI 330W", Price: "657.3798"},
+		{Name: "INVERSOR MONO 3KW 220V", Price: "3763.59375"},
+		{Name: "CABO SOLAR 6MM2 VM", Price: "5.32"},
+		{Name: "DISJUNTOR TRIPOLAR 63A", Price: "23.4348375"},
+		{Name: "PERFIS ALUMÍNIO 4150MM TELHADO 04 PLACAS", Price: "144.6571875"},
+		{Name: "ESTRUTURA SOLAR TELHA ONDULADA 4 PLACAS", Price: "165.615625"},
 	}
 
 	for _, seed := range initialSeed {
 		err := store.InsertProduct(db, seed)
 		if err != nil {
-			log.Fatal(err)
+			fmt.Printf("Error seeding: %v\n", err)
+		} else {
+			fmt.Printf("Seeded: %v\n", seed)
 		}
-		fmt.Printf("Seeded: %v\n", seed)
 	}
 
 	return nil

@@ -6,9 +6,9 @@ type Product struct {
 	Price string `json:"price"`
 }
 
-// Quotation defines a quotation's
-// request attributes
-type Quotation struct {
+// QuotationRequest defines a
+// quotation's request attributes
+type QuotationRequest struct {
 	ProductName string `json:"name"`
 	Quantity    uint   `json:"quant"`
 }
