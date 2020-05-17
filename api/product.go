@@ -37,3 +37,12 @@ func (s *Server) quotation(c echo.Context) error {
 
 	return c.JSON(http.StatusOK, priceTable)
 }
+
+func (s *Server) getAllProducts(c echo.Context) error {
+	res, err := store.FindAllProducts(s.storage.database)
+	if err != nil {
+		return err
+	}
+
+	return c.JSON(http.StatusOK, res)
+}
